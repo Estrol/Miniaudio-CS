@@ -2,6 +2,8 @@
 
 Auto-generated C# bindings for [miniaudio](https://github.com/mackron/miniaudio)
 
+Miniaudio version: 0.11.23
+
 ## Example
 
 ```c#
