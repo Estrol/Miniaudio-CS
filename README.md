@@ -4,7 +4,68 @@ Auto-generated C# bindings for [miniaudio](https://github.com/mackron/miniaudio)
 
 Miniaudio version: 0.11.23
 
+Fork feature: Ogg vorbis and Opus decoding support via [opusfile](https://github.com/xiph/opusfile) and [libvorbis](https://xiph.org/vorbis/)
+
 ## Example
+```cs
+using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using Miniaudio;
+
+internal class Program
+{
+    static readonly unsafe ma_decoder* decoder;
+
+    public unsafe static void Main(string[] args)
+    {
+        ma_device* device = (ma_device*)NativeMemory.Alloc((nuint)sizeof(ma_device));
+        ma_device_config config = ma.device_config_init(ma_device_type.Playback);
+        config.playback.format = ma_format.ma_format_f32;
+        config.playback.channels = 2;
+        config.sampleRate = 44100;
+        config.dataCallback = &DataCallback;
+        config.pUserData = null;
+
+        ma.device_init(null, &config, device);
+        ma_decoder_config decoderConfig = ma.decoder_config_init(ma_format.ma_format_f32, 2, 44100);
+        decoder = (ma_decoder*)NativeMemory.Alloc((nuint)sizeof(ma_decoder));
+
+        fixed (byte* p = Encoding.ASCII.GetBytes("music.mp3"))
+        {
+            ma.decoder_init_file((sbyte*)p, &decoderConfig, decoder);
+        }
+
+        ma.device_start(device);
+
+        Console.ReadKey();
+        
+        ma.device_uninit(device);
+        NativeMemory.Free(device);
+
+        ma.decoder_uninit(decoder);
+        NativeMemory.Free(decoder);
+    }
+
+    [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
+    internal static unsafe void DataCallback(ma_device* device, void* output, void* input, uint frameCount)
+    {
+        if (decoder == null)
+        {
+            return;
+        }
+
+        ulong framesRead = 0;
+        ma_result result = ma.decoder_read_pcm_frames(decoder, output, frameCount, &framesRead);
+        if (result != ma_result.MA_SUCCESS || framesRead == 0)
+        {
+            // Close the device
+            ma.device_stop(device);
+        }
+    }
+}
+
+```
+
 
 ```c#
 using System.Runtime.InteropServices;
@@ -59,12 +120,13 @@ internal class Program
 
 ```shell
 dotnet tool install --global ClangSharpPInvokeGenerator
-git clone https://github.com/cubeww/Miniaudio-CS --recursive
+git clone https://github.com/Estrol/Miniaudio-CS --recursive
 cd Miniaudio-CS/GenerateBindings
 ClangSharpPInvokeGenerator @generate.gen
 ```
 
 ## Build Native Library
 
-[actions](https://github.com/cubeww/Miniaudio-CS/actions)
+[actions](https://github.com/Estrol/Miniaudio-CS/actions)
 
+## License
