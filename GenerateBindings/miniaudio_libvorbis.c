@@ -1,6 +1,7 @@
 #ifndef miniaudio_libvorbis_c
 #define miniaudio_libvorbis_c
 
+#define MINIAUDIO_VORBIS_IMPLEMENTATION
 #include "./miniaudio_libvorbis.h"
 
 #if !defined(MA_NO_LIBVORBIS)
