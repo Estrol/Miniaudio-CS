@@ -1,5 +1,7 @@
 --file
 miniaudio/extras/miniaudio_split/miniaudio.h
+--file
+./miniaudio_libvorbis.h
 --libraryPath
 miniaudio
 --namespace

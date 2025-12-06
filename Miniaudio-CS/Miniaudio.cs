@@ -5237,6 +5237,26 @@ namespace Miniaudio
         }
     }
 
+    public unsafe partial struct ma_libvorbis
+    {
+        public ma_data_source_base ds;
+
+        [NativeTypeName("ma_read_proc")]
+        public delegate* unmanaged[Cdecl]<void*, void*, nuint, nuint*, ma_result> onRead;
+
+        [NativeTypeName("ma_seek_proc")]
+        public delegate* unmanaged[Cdecl]<void*, long, ma_seek_origin, ma_result> onSeek;
+
+        [NativeTypeName("ma_tell_proc")]
+        public delegate* unmanaged[Cdecl]<void*, long*, ma_result> onTell;
+
+        public void* pReadSeekTellUserData;
+
+        public ma_format format;
+
+        public void* vf;
+    }
+
     public static unsafe partial class ma
     {
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_version", ExactSpelling = true)]
@@ -8145,5 +8165,32 @@ namespace Miniaudio
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_group_get_time_in_pcm_frames", ExactSpelling = true)]
         [return: NativeTypeName("ma_uint64")]
         public static extern ulong sound_group_get_time_in_pcm_frames([NativeTypeName("const ma_sound_group *")] ma_sound* pGroup);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_init", ExactSpelling = true)]
+        public static extern ma_result libvorbis_init([NativeTypeName("ma_read_proc")] delegate* unmanaged[Cdecl]<void*, void*, nuint, nuint*, ma_result> onRead, [NativeTypeName("ma_seek_proc")] delegate* unmanaged[Cdecl]<void*, long, ma_seek_origin, ma_result> onSeek, [NativeTypeName("ma_tell_proc")] delegate* unmanaged[Cdecl]<void*, long*, ma_result> onTell, void* pReadSeekTellUserData, [NativeTypeName("const ma_decoding_backend_config *")] ma_decoding_backend_config* pConfig, [NativeTypeName("const ma_allocation_callbacks *")] ma_allocation_callbacks* pAllocationCallbacks, ma_libvorbis* pVorbis);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_init_file", ExactSpelling = true)]
+        public static extern ma_result libvorbis_init_file([NativeTypeName("const char *")] sbyte* pFilePath, [NativeTypeName("const ma_decoding_backend_config *")] ma_decoding_backend_config* pConfig, [NativeTypeName("const ma_allocation_callbacks *")] ma_allocation_callbacks* pAllocationCallbacks, ma_libvorbis* pVorbis);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_uninit", ExactSpelling = true)]
+        public static extern void libvorbis_uninit(ma_libvorbis* pVorbis, [NativeTypeName("const ma_allocation_callbacks *")] ma_allocation_callbacks* pAllocationCallbacks);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_read_pcm_frames", ExactSpelling = true)]
+        public static extern ma_result libvorbis_read_pcm_frames(ma_libvorbis* pVorbis, void* pFramesOut, [NativeTypeName("ma_uint64")] ulong frameCount, [NativeTypeName("ma_uint64 *")] ulong* pFramesRead);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_seek_to_pcm_frame", ExactSpelling = true)]
+        public static extern ma_result libvorbis_seek_to_pcm_frame(ma_libvorbis* pVorbis, [NativeTypeName("ma_uint64")] ulong frameIndex);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_get_data_format", ExactSpelling = true)]
+        public static extern ma_result libvorbis_get_data_format(ma_libvorbis* pVorbis, ma_format* pFormat, [NativeTypeName("ma_uint32 *")] uint* pChannels, [NativeTypeName("ma_uint32 *")] uint* pSampleRate, [NativeTypeName("ma_channel *")] byte* pChannelMap, [NativeTypeName("size_t")] nuint channelMapCap);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_get_cursor_in_pcm_frames", ExactSpelling = true)]
+        public static extern ma_result libvorbis_get_cursor_in_pcm_frames(ma_libvorbis* pVorbis, [NativeTypeName("ma_uint64 *")] ulong* pCursor);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_libvorbis_get_length_in_pcm_frames", ExactSpelling = true)]
+        public static extern ma_result libvorbis_get_length_in_pcm_frames(ma_libvorbis* pVorbis, [NativeTypeName("ma_uint64 *")] ulong* pLength);
+
+        [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_decoder_config_set_libvorbis_backend", ExactSpelling = true)]
+        public static extern ma_result decoder_config_set_libvorbis_backend(ma_decoder_config* pConfig);
     }
 }
