@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<RootNamespace>Miniaudio</RootNamespace>
@@ -11,12 +10,13 @@
 		<Description>C# bindings for miniaudio</Description>
 		<PackageTags>audio;miniaudio;player;mp3;wav;flac</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Authors>NyaCube</Authors>
-		<PackageProjectUrl>https://github.com/cubeww/Miniaudio-CS.git</PackageProjectUrl>
-		<RepositoryUrl>https://github.com/cubeww/Miniaudio-CS.git</RepositoryUrl>
+		<Authors>Estrol &amp; NyaCube</Authors>
+		<PackageProjectUrl>https://github.com/estrol/Miniaudio-CS.git</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/estrol/Miniaudio-CS.git</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
+		<PackageId>Estrol.Miniaudio-CS</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>1.0.4</Version>
+		<Version>1.0.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

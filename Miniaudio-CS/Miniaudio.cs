@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using static Miniaudio.ma_format;
 
@@ -239,8 +241,8 @@ namespace Miniaudio
 
     public partial struct ma_lcg
     {
-        [NativeTypeName("ma_int32")]
-        public int state;
+        [NativeTypeName("ma_uint32")]
+        public uint state;
     }
 
     public partial struct ma_atomic_uint32
@@ -306,22 +308,10 @@ namespace Miniaudio
         [NativeTypeName("ma_mutex")]
         public void* @lock;
 
+        [InlineArray(4)]
         public partial struct _callbacks_e__FixedBuffer
         {
             public ma_log_callback e0;
-            public ma_log_callback e1;
-            public ma_log_callback e2;
-            public ma_log_callback e3;
-
-            public ref ma_log_callback this[int index]
-            {
-                get
-                {
-                    return ref AsSpan()[index];
-                }
-            }
-
-            public Span<ma_log_callback> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 4);
         }
     }
 
@@ -1014,10 +1004,10 @@ namespace Miniaudio
         [NativeTypeName("ma_uint32")]
         public uint inTimeFrac;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L1590_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L1622_C5")]
         public _x0_e__Union x0;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L1595_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L1627_C5")]
         public _x1_e__Union x1;
 
         public ma_lpf lpf;
@@ -1108,7 +1098,7 @@ namespace Miniaudio
 
         public void* pBackendUserData;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L1653_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L1685_C5")]
         public _linear_e__Struct linear;
 
         public partial struct _linear_e__Struct
@@ -1138,7 +1128,7 @@ namespace Miniaudio
         [NativeTypeName("ma_uint32")]
         public uint sampleRateOut;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L1670_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L1702_C5")]
         public _state_e__Union state;
 
         public void* _pHeap;
@@ -1219,7 +1209,7 @@ namespace Miniaudio
         [NativeTypeName("ma_uint8 *")]
         public byte* pShuffleTable;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L1808_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L1840_C5")]
         public _weights_e__Union weights;
 
         public void* _pHeap;
@@ -1436,7 +1426,7 @@ namespace Miniaudio
         public ma_allocation_callbacks allocationCallbacks;
     }
 
-    public unsafe partial struct ma_audio_buffer
+    public partial struct ma_audio_buffer
     {
         public ma_audio_buffer_ref @ref;
 
@@ -1446,7 +1436,24 @@ namespace Miniaudio
         public uint ownsData;
 
         [NativeTypeName("ma_uint8[1]")]
-        public fixed byte _pExtraData[1];
+        public __pExtraData_e__FixedBuffer _pExtraData;
+
+        public partial struct __pExtraData_e__FixedBuffer
+        {
+            public byte e0;
+
+            [UnscopedRef]
+            public ref byte this[int index]
+            {
+                get
+                {
+                    return ref Unsafe.Add(ref e0, index);
+                }
+            }
+
+            [UnscopedRef]
+            public Span<byte> AsSpan(int length) => MemoryMarshal.CreateSpan(ref e0, length);
+        }
     }
 
     public unsafe partial struct ma_paged_audio_buffer_page
@@ -1457,7 +1464,24 @@ namespace Miniaudio
         public ulong sizeInFrames;
 
         [NativeTypeName("ma_uint8[1]")]
-        public fixed byte pAudioData[1];
+        public _pAudioData_e__FixedBuffer pAudioData;
+
+        public partial struct _pAudioData_e__FixedBuffer
+        {
+            public byte e0;
+
+            [UnscopedRef]
+            public ref byte this[int index]
+            {
+                get
+                {
+                    return ref Unsafe.Add(ref e0, index);
+                }
+            }
+
+            [UnscopedRef]
+            public Span<byte> AsSpan(int length) => MemoryMarshal.CreateSpan(ref e0, length);
+        }
     }
 
     public unsafe partial struct ma_paged_audio_buffer_data
@@ -1619,9 +1643,9 @@ namespace Miniaudio
         MA_JOB_TYPE_COUNT,
     }
 
-    public unsafe partial struct ma_job
+    public partial struct ma_job
     {
-        [NativeTypeName("__AnonymousRecord_miniaudio_L2661_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L2693_C5")]
         public _toc_e__Union toc;
 
         [NativeTypeName("ma_uint64")]
@@ -1630,14 +1654,14 @@ namespace Miniaudio
         [NativeTypeName("ma_uint32")]
         public uint order;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L2674_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L2706_C5")]
         public _data_e__Union data;
 
         [StructLayout(LayoutKind.Explicit)]
         public partial struct _toc_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L2663_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L2695_C9")]
             public _breakup_e__Struct breakup;
 
             [FieldOffset(0)]
@@ -1658,18 +1682,18 @@ namespace Miniaudio
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _data_e__Union
+        public partial struct _data_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L2677_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L2709_C9")]
             public _custom_e__Struct custom;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L2685_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L2717_C9")]
             public _resourceManager_e__Union resourceManager;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L2763_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L2795_C9")]
             public _device_e__Union device;
 
             public unsafe partial struct _custom_e__Struct
@@ -1685,42 +1709,42 @@ namespace Miniaudio
             }
 
             [StructLayout(LayoutKind.Explicit)]
-            public unsafe partial struct _resourceManager_e__Union
+            public partial struct _resourceManager_e__Union
             {
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2687_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2719_C13")]
                 public _loadDataBufferNode_e__Struct loadDataBufferNode;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2699_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2731_C13")]
                 public _freeDataBufferNode_e__Struct freeDataBufferNode;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2706_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2738_C13")]
                 public _pageDataBufferNode_e__Struct pageDataBufferNode;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2715_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2747_C13")]
                 public _loadDataBuffer_e__Struct loadDataBuffer;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2728_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2760_C13")]
                 public _freeDataBuffer_e__Struct freeDataBuffer;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2735_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2767_C13")]
                 public _loadDataStream_e__Struct loadDataStream;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2744_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2776_C13")]
                 public _freeDataStream_e__Struct freeDataStream;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2750_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2782_C13")]
                 public _pageDataStream_e__Struct pageDataStream;
 
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2755_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2787_C13")]
                 public _seekDataStream_e__Struct seekDataStream;
 
                 public unsafe partial struct _loadDataBufferNode_e__Struct
@@ -1862,17 +1886,17 @@ namespace Miniaudio
             }
 
             [StructLayout(LayoutKind.Explicit)]
-            public unsafe partial struct _device_e__Union
+            public partial struct _device_e__Union
             {
                 [FieldOffset(0)]
-                [NativeTypeName("__AnonymousRecord_miniaudio_L2765_C13")]
+                [NativeTypeName("__AnonymousRecord_miniaudio_L2797_C13")]
                 public _aaudio_e__Union aaudio;
 
                 [StructLayout(LayoutKind.Explicit)]
-                public unsafe partial struct _aaudio_e__Union
+                public partial struct _aaudio_e__Union
                 {
                     [FieldOffset(0)]
-                    [NativeTypeName("__AnonymousRecord_miniaudio_L2767_C17")]
+                    [NativeTypeName("__AnonymousRecord_miniaudio_L2799_C17")]
                     public _reroute_e__Struct reroute;
 
                     public unsafe partial struct _reroute_e__Struct
@@ -2013,26 +2037,26 @@ namespace Miniaudio
 
         public ma_device_notification_type type;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3031_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3063_C5")]
         public _data_e__Union data;
 
         [StructLayout(LayoutKind.Explicit)]
         public partial struct _data_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3033_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3065_C9")]
             public _started_e__Struct started;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3037_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3069_C9")]
             public _stopped_e__Struct stopped;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3041_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3073_C9")]
             public _rerouted_e__Struct rerouted;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3045_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3077_C9")]
             public _interruption_e__Struct interruption;
 
             public partial struct _started_e__Struct
@@ -2183,15 +2207,15 @@ namespace Miniaudio
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    public unsafe partial struct ma_device_id
+    public partial struct ma_device_id
     {
         [FieldOffset(0)]
         [NativeTypeName("ma_wchar_win32[64]")]
-        public fixed ushort wasapi[64];
+        public _wasapi_e__FixedBuffer wasapi;
 
         [FieldOffset(0)]
         [NativeTypeName("ma_uint8[16]")]
-        public fixed byte dsound[16];
+        public _dsound_e__FixedBuffer dsound;
 
         [FieldOffset(0)]
         [NativeTypeName("ma_uint32")]
@@ -2199,30 +2223,30 @@ namespace Miniaudio
 
         [FieldOffset(0)]
         [NativeTypeName("char[256]")]
-        public fixed sbyte alsa[256];
+        public _alsa_e__FixedBuffer alsa;
 
         [FieldOffset(0)]
         [NativeTypeName("char[256]")]
-        public fixed sbyte pulse[256];
+        public _pulse_e__FixedBuffer pulse;
 
         [FieldOffset(0)]
         public int jack;
 
         [FieldOffset(0)]
         [NativeTypeName("char[256]")]
-        public fixed sbyte coreaudio[256];
+        public _coreaudio_e__FixedBuffer coreaudio;
 
         [FieldOffset(0)]
         [NativeTypeName("char[256]")]
-        public fixed sbyte sndio[256];
+        public _sndio_e__FixedBuffer sndio;
 
         [FieldOffset(0)]
         [NativeTypeName("char[256]")]
-        public fixed sbyte audio4[256];
+        public _audio4_e__FixedBuffer audio4;
 
         [FieldOffset(0)]
         [NativeTypeName("char[64]")]
-        public fixed sbyte oss[64];
+        public _oss_e__FixedBuffer oss;
 
         [FieldOffset(0)]
         [NativeTypeName("ma_int32")]
@@ -2234,10 +2258,10 @@ namespace Miniaudio
 
         [FieldOffset(0)]
         [NativeTypeName("char[32]")]
-        public fixed sbyte webaudio[32];
+        public _webaudio_e__FixedBuffer webaudio;
 
         [FieldOffset(0)]
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3304_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3336_C5")]
         public _custom_e__Union custom;
 
         [FieldOffset(0)]
@@ -2251,19 +2275,79 @@ namespace Miniaudio
 
             [FieldOffset(0)]
             [NativeTypeName("char[256]")]
-            public fixed sbyte s[256];
+            public _s_e__FixedBuffer s;
 
             [FieldOffset(0)]
             public void* p;
+
+            [InlineArray(256)]
+            public partial struct _s_e__FixedBuffer
+            {
+                public sbyte e0;
+            }
+        }
+
+        [InlineArray(64)]
+        public partial struct _wasapi_e__FixedBuffer
+        {
+            public ushort e0;
+        }
+
+        [InlineArray(16)]
+        public partial struct _dsound_e__FixedBuffer
+        {
+            public byte e0;
+        }
+
+        [InlineArray(256)]
+        public partial struct _alsa_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(256)]
+        public partial struct _pulse_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(256)]
+        public partial struct _coreaudio_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(256)]
+        public partial struct _sndio_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(256)]
+        public partial struct _audio4_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(64)]
+        public partial struct _oss_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(32)]
+        public partial struct _webaudio_e__FixedBuffer
+        {
+            public sbyte e0;
         }
     }
 
-    public unsafe partial struct ma_device_info
+    public partial struct ma_device_info
     {
         public ma_device_id id;
 
         [NativeTypeName("char[256]")]
-        public fixed sbyte name[256];
+        public _name_e__FixedBuffer name;
 
         [NativeTypeName("ma_bool32")]
         public uint isDefault;
@@ -2271,10 +2355,10 @@ namespace Miniaudio
         [NativeTypeName("ma_uint32")]
         public uint nativeDataFormatCount;
 
-        [NativeTypeName("struct (anonymous struct at miniaudio/extras/miniaudio_split/miniaudio.h:3334:5)[64]")]
+        [NativeTypeName("struct (anonymous struct at miniaudio/extras/miniaudio_split/miniaudio.h:3366:5)[64]")]
         public _nativeDataFormats_e__FixedBuffer nativeDataFormats;
 
-        public partial struct _Anonymous_e__Struct
+        public partial struct _nativeDataFormats_e__Struct
         {
             public ma_format format;
 
@@ -2288,82 +2372,16 @@ namespace Miniaudio
             public uint flags;
         }
 
+        [InlineArray(256)]
+        public partial struct _name_e__FixedBuffer
+        {
+            public sbyte e0;
+        }
+
+        [InlineArray(64)]
         public partial struct _nativeDataFormats_e__FixedBuffer
         {
-            public _Anonymous_e__Struct e0;
-            public _Anonymous_e__Struct e1;
-            public _Anonymous_e__Struct e2;
-            public _Anonymous_e__Struct e3;
-            public _Anonymous_e__Struct e4;
-            public _Anonymous_e__Struct e5;
-            public _Anonymous_e__Struct e6;
-            public _Anonymous_e__Struct e7;
-            public _Anonymous_e__Struct e8;
-            public _Anonymous_e__Struct e9;
-            public _Anonymous_e__Struct e10;
-            public _Anonymous_e__Struct e11;
-            public _Anonymous_e__Struct e12;
-            public _Anonymous_e__Struct e13;
-            public _Anonymous_e__Struct e14;
-            public _Anonymous_e__Struct e15;
-            public _Anonymous_e__Struct e16;
-            public _Anonymous_e__Struct e17;
-            public _Anonymous_e__Struct e18;
-            public _Anonymous_e__Struct e19;
-            public _Anonymous_e__Struct e20;
-            public _Anonymous_e__Struct e21;
-            public _Anonymous_e__Struct e22;
-            public _Anonymous_e__Struct e23;
-            public _Anonymous_e__Struct e24;
-            public _Anonymous_e__Struct e25;
-            public _Anonymous_e__Struct e26;
-            public _Anonymous_e__Struct e27;
-            public _Anonymous_e__Struct e28;
-            public _Anonymous_e__Struct e29;
-            public _Anonymous_e__Struct e30;
-            public _Anonymous_e__Struct e31;
-            public _Anonymous_e__Struct e32;
-            public _Anonymous_e__Struct e33;
-            public _Anonymous_e__Struct e34;
-            public _Anonymous_e__Struct e35;
-            public _Anonymous_e__Struct e36;
-            public _Anonymous_e__Struct e37;
-            public _Anonymous_e__Struct e38;
-            public _Anonymous_e__Struct e39;
-            public _Anonymous_e__Struct e40;
-            public _Anonymous_e__Struct e41;
-            public _Anonymous_e__Struct e42;
-            public _Anonymous_e__Struct e43;
-            public _Anonymous_e__Struct e44;
-            public _Anonymous_e__Struct e45;
-            public _Anonymous_e__Struct e46;
-            public _Anonymous_e__Struct e47;
-            public _Anonymous_e__Struct e48;
-            public _Anonymous_e__Struct e49;
-            public _Anonymous_e__Struct e50;
-            public _Anonymous_e__Struct e51;
-            public _Anonymous_e__Struct e52;
-            public _Anonymous_e__Struct e53;
-            public _Anonymous_e__Struct e54;
-            public _Anonymous_e__Struct e55;
-            public _Anonymous_e__Struct e56;
-            public _Anonymous_e__Struct e57;
-            public _Anonymous_e__Struct e58;
-            public _Anonymous_e__Struct e59;
-            public _Anonymous_e__Struct e60;
-            public _Anonymous_e__Struct e61;
-            public _Anonymous_e__Struct e62;
-            public _Anonymous_e__Struct e63;
-
-            public ref _Anonymous_e__Struct this[int index]
-            {
-                get
-                {
-                    return ref AsSpan()[index];
-                }
-            }
-
-            public Span<_Anonymous_e__Struct> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 64);
+            public _nativeDataFormats_e__Struct e0;
         }
     }
 
@@ -2410,28 +2428,28 @@ namespace Miniaudio
 
         public ma_resampler_config resampling;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3360_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3392_C5")]
         public _playback_e__Struct playback;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3370_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3402_C5")]
         public _capture_e__Struct capture;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3381_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3413_C5")]
         public _wasapi_e__Struct wasapi;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3391_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3423_C5")]
         public _alsa_e__Struct alsa;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3398_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3430_C5")]
         public _pulse_e__Struct pulse;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3404_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3436_C5")]
         public _coreaudio_e__Struct coreaudio;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3408_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3440_C5")]
         public _opensl_e__Struct opensl;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3414_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3446_C5")]
         public _aaudio_e__Struct aaudio;
 
         public unsafe partial struct _playback_e__Struct
@@ -2578,7 +2596,7 @@ namespace Miniaudio
         public uint sampleRate;
 
         [NativeTypeName("ma_channel[254]")]
-        public fixed byte channelMap[254];
+        public _channelMap_e__FixedBuffer channelMap;
 
         [NativeTypeName("ma_uint32")]
         public uint periodSizeInFrames;
@@ -2588,6 +2606,12 @@ namespace Miniaudio
 
         [NativeTypeName("ma_uint32")]
         public uint periodCount;
+
+        [InlineArray(254)]
+        public partial struct _channelMap_e__FixedBuffer
+        {
+            public byte e0;
+        }
     }
 
     public unsafe partial struct ma_backend_callbacks
@@ -2645,19 +2669,19 @@ namespace Miniaudio
 
         public ma_allocation_callbacks allocationCallbacks;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3558_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3590_C5")]
         public _dsound_e__Struct dsound;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3562_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3594_C5")]
         public _alsa_e__Struct alsa;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3566_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3598_C5")]
         public _pulse_e__Struct pulse;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3572_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3604_C5")]
         public _coreaudio_e__Struct coreaudio;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3579_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3611_C5")]
         public _jack_e__Struct jack;
 
         public ma_backend_callbacks custom;
@@ -2717,22 +2741,22 @@ namespace Miniaudio
         [NativeTypeName("ma_event *")]
         public void** pEvent;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3592_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3624_C5")]
         public _data_e__Union data;
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _data_e__Union
+        public partial struct _data_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3594_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3626_C9")]
             public _quit_e__Struct quit;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3598_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3630_C9")]
             public _createAudioClient_e__Struct createAudioClient;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3605_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3637_C9")]
             public _releaseAudioClient_e__Struct releaseAudioClient;
 
             public partial struct _quit_e__Struct
@@ -2796,89 +2820,96 @@ namespace Miniaudio
 
         public ma_device_info* pDeviceInfos;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3630_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L3662_C5")]
         public _Anonymous1_e__Union Anonymous1;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L3985_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L4018_C5")]
         public _Anonymous2_e__Union Anonymous2;
 
+        [UnscopedRef]
         public ref _Anonymous1_e__Union._wasapi_e__Struct wasapi
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous1.wasapi, 1));
+                return ref Anonymous1.wasapi;
             }
         }
 
+        [UnscopedRef]
         public ref _Anonymous1_e__Union._dsound_e__Struct dsound
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous1.dsound, 1));
+                return ref Anonymous1.dsound;
             }
         }
 
+        [UnscopedRef]
         public ref _Anonymous1_e__Union._winmm_e__Struct winmm
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous1.winmm, 1));
+                return ref Anonymous1.winmm;
             }
         }
 
+        [UnscopedRef]
         public ref _Anonymous1_e__Union._jack_e__Struct jack
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous1.jack, 1));
+                return ref Anonymous1.jack;
             }
         }
 
+        [UnscopedRef]
         public ref _Anonymous1_e__Union._null_backend_e__Struct null_backend
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous1.null_backend, 1));
+                return ref Anonymous1.null_backend;
             }
         }
 
+        [UnscopedRef]
         public ref _Anonymous2_e__Union._win32_e__Struct win32
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous2.win32, 1));
+                return ref Anonymous2.win32;
             }
         }
 
+        [UnscopedRef]
         public ref int _unused
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous2._unused, 1));
+                return ref Anonymous2._unused;
             }
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _Anonymous1_e__Union
+        public partial struct _Anonymous1_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3633_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3665_C9")]
             public _wasapi_e__Struct wasapi;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3649_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3681_C9")]
             public _dsound_e__Struct dsound;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3660_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3692_C9")]
             public _winmm_e__Struct winmm;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3830_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L3863_C9")]
             public _jack_e__Struct jack;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3978_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4011_C9")]
             public _null_backend_e__Struct null_backend;
 
             public unsafe partial struct _wasapi_e__Struct
@@ -2916,22 +2947,10 @@ namespace Miniaudio
                 [NativeTypeName("ma_proc")]
                 public void* ActivateAudioInterfaceAsync;
 
+                [InlineArray(4)]
                 public partial struct _commands_e__FixedBuffer
                 {
                     public ma_context_command__wasapi e0;
-                    public ma_context_command__wasapi e1;
-                    public ma_context_command__wasapi e2;
-                    public ma_context_command__wasapi e3;
-
-                    public ref ma_context_command__wasapi this[int index]
-                    {
-                        get
-                        {
-                            return ref AsSpan()[index];
-                        }
-                    }
-
-                    public Span<ma_context_command__wasapi> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 4);
                 }
             }
 
@@ -3080,10 +3099,10 @@ namespace Miniaudio
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _Anonymous2_e__Union
+        public partial struct _Anonymous2_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L3988_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4021_C9")]
             public _win32_e__Struct win32;
 
             [FieldOffset(0)]
@@ -3200,55 +3219,60 @@ namespace Miniaudio
 
         public ma_duplex_rb duplexRB;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L4044_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L4077_C5")]
         public _resampling_e__Struct resampling;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L4054_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L4087_C5")]
         public _playback_e__Struct playback;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L4080_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L4113_C5")]
         public _capture_e__Struct capture;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L4103_C5")]
-        public _Anonymous4_e__Union Anonymous4;
+        [NativeTypeName("__AnonymousRecord_miniaudio_L4136_C5")]
+        public _Anonymous_e__Union Anonymous;
 
-        public ref _Anonymous4_e__Union._wasapi_e__Struct wasapi
+        [UnscopedRef]
+        public ref _Anonymous_e__Union._wasapi_e__Struct wasapi
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous4.wasapi, 1));
+                return ref Anonymous.wasapi;
             }
         }
 
-        public ref _Anonymous4_e__Union._dsound_e__Struct dsound
+        [UnscopedRef]
+        public ref _Anonymous_e__Union._dsound_e__Struct dsound
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous4.dsound, 1));
+                return ref Anonymous.dsound;
             }
         }
 
-        public ref _Anonymous4_e__Union._winmm_e__Struct winmm
+        [UnscopedRef]
+        public ref _Anonymous_e__Union._winmm_e__Struct winmm
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous4.winmm, 1));
+                return ref Anonymous.winmm;
             }
         }
 
-        public ref _Anonymous4_e__Union._jack_e__Struct jack
+        [UnscopedRef]
+        public ref _Anonymous_e__Union._jack_e__Struct jack
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous4.jack, 1));
+                return ref Anonymous.jack;
             }
         }
 
-        public ref _Anonymous4_e__Union._null_device_e__Struct null_device
+        [UnscopedRef]
+        public ref _Anonymous_e__Union._null_device_e__Struct null_device
         {
             get
             {
-                return ref MemoryMarshal.GetReference(MemoryMarshal.CreateSpan(ref Anonymous4.null_device, 1));
+                return ref Anonymous.null_device;
             }
         }
 
@@ -3260,7 +3284,7 @@ namespace Miniaudio
 
             public void* pBackendUserData;
 
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4049_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4082_C9")]
             public _linear_e__Struct linear;
 
             public partial struct _linear_e__Struct
@@ -3277,7 +3301,7 @@ namespace Miniaudio
             public ma_device_id id;
 
             [NativeTypeName("char[256]")]
-            public fixed sbyte name[256];
+            public _name_e__FixedBuffer name;
 
             public ma_share_mode shareMode;
 
@@ -3287,7 +3311,7 @@ namespace Miniaudio
             public uint channels;
 
             [NativeTypeName("ma_channel[254]")]
-            public fixed byte channelMap[254];
+            public _channelMap_e__FixedBuffer channelMap;
 
             public ma_format internalFormat;
 
@@ -3298,7 +3322,7 @@ namespace Miniaudio
             public uint internalSampleRate;
 
             [NativeTypeName("ma_channel[254]")]
-            public fixed byte internalChannelMap[254];
+            public _internalChannelMap_e__FixedBuffer internalChannelMap;
 
             [NativeTypeName("ma_uint32")]
             public uint internalPeriodSizeInFrames;
@@ -3331,6 +3355,24 @@ namespace Miniaudio
 
             [NativeTypeName("ma_uint64")]
             public ulong inputCacheRemaining;
+
+            [InlineArray(256)]
+            public partial struct _name_e__FixedBuffer
+            {
+                public sbyte e0;
+            }
+
+            [InlineArray(254)]
+            public partial struct _channelMap_e__FixedBuffer
+            {
+                public byte e0;
+            }
+
+            [InlineArray(254)]
+            public partial struct _internalChannelMap_e__FixedBuffer
+            {
+                public byte e0;
+            }
         }
 
         public unsafe partial struct _capture_e__Struct
@@ -3340,7 +3382,7 @@ namespace Miniaudio
             public ma_device_id id;
 
             [NativeTypeName("char[256]")]
-            public fixed sbyte name[256];
+            public _name_e__FixedBuffer name;
 
             public ma_share_mode shareMode;
 
@@ -3350,7 +3392,7 @@ namespace Miniaudio
             public uint channels;
 
             [NativeTypeName("ma_channel[254]")]
-            public fixed byte channelMap[254];
+            public _channelMap_e__FixedBuffer channelMap;
 
             public ma_format internalFormat;
 
@@ -3361,7 +3403,7 @@ namespace Miniaudio
             public uint internalSampleRate;
 
             [NativeTypeName("ma_channel[254]")]
-            public fixed byte internalChannelMap[254];
+            public _internalChannelMap_e__FixedBuffer internalChannelMap;
 
             [NativeTypeName("ma_uint32")]
             public uint internalPeriodSizeInFrames;
@@ -3383,29 +3425,47 @@ namespace Miniaudio
 
             [NativeTypeName("ma_uint32")]
             public uint intermediaryBufferLen;
+
+            [InlineArray(256)]
+            public partial struct _name_e__FixedBuffer
+            {
+                public sbyte e0;
+            }
+
+            [InlineArray(254)]
+            public partial struct _channelMap_e__FixedBuffer
+            {
+                public byte e0;
+            }
+
+            [InlineArray(254)]
+            public partial struct _internalChannelMap_e__FixedBuffer
+            {
+                public byte e0;
+            }
         }
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _Anonymous4_e__Union
+        public partial struct _Anonymous_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4106_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4139_C9")]
             public _wasapi_e__Struct wasapi;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4147_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4180_C9")]
             public _dsound_e__Struct dsound;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4157_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4190_C9")]
             public _winmm_e__Struct winmm;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4200_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4233_C9")]
             public _jack_e__Struct jack;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L4298_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L4332_C9")]
             public _null_device_e__Struct null_device;
 
             public unsafe partial struct _wasapi_e__Struct
@@ -3801,18 +3861,18 @@ namespace Miniaudio
 
         public ma_allocation_callbacks allocationCallbacks;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6257_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6291_C5")]
         public _data_e__Union data;
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _data_e__Union
+        public partial struct _data_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6259_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6293_C9")]
             public _vfs_e__Struct vfs;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6264_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6298_C9")]
             public _memory_e__Struct memory;
 
             public unsafe partial struct _vfs_e__Struct
@@ -3876,14 +3936,14 @@ namespace Miniaudio
 
         public void* pInternalEncoder;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6388_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6422_C5")]
         public _data_e__Union data;
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _data_e__Union
+        public partial struct _data_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6390_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6424_C9")]
             public _vfs_e__Struct vfs;
 
             public unsafe partial struct _vfs_e__Struct
@@ -3990,7 +4050,7 @@ namespace Miniaudio
 
         public ma_lcg lcg;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6504_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6538_C5")]
         public _state_e__Union state;
 
         public void* _pHeap;
@@ -3999,14 +4059,14 @@ namespace Miniaudio
         public uint _ownsHeap;
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _state_e__Union
+        public partial struct _state_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6506_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6540_C9")]
             public _pink_e__Struct pink;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6512_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6546_C9")]
             public _brownian_e__Struct brownian;
 
             public unsafe partial struct _pink_e__Struct
@@ -4098,26 +4158,26 @@ namespace Miniaudio
         ma_resource_manager_data_supply_type_decoded_paged,
     }
 
-    public unsafe partial struct ma_resource_manager_data_supply
+    public partial struct ma_resource_manager_data_supply
     {
         public ma_resource_manager_data_supply_type type;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6646_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6680_C5")]
         public _backend_e__Union backend;
 
         [StructLayout(LayoutKind.Explicit)]
-        public unsafe partial struct _backend_e__Union
+        public partial struct _backend_e__Union
         {
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6648_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6682_C9")]
             public _encoded_e__Struct encoded;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6653_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6687_C9")]
             public _decoded_e__Struct decoded;
 
             [FieldOffset(0)]
-            [NativeTypeName("__AnonymousRecord_miniaudio_L6662_C9")]
+            [NativeTypeName("__AnonymousRecord_miniaudio_L6696_C9")]
             public _decodedPaged_e__Struct decodedPaged;
 
             public unsafe partial struct _encoded_e__Struct
@@ -4220,7 +4280,7 @@ namespace Miniaudio
 
         public ma_atomic_bool32 isConnectorInitialized;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6698_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6732_C5")]
         public _connector_e__Union connector;
 
         [StructLayout(LayoutKind.Explicit)]
@@ -4275,7 +4335,7 @@ namespace Miniaudio
         public void* pPageData;
 
         [NativeTypeName("ma_uint32[2]")]
-        public fixed uint pageFrameCount[2];
+        public _pageFrameCount_e__FixedBuffer pageFrameCount;
 
         public ma_result result;
 
@@ -4283,15 +4343,27 @@ namespace Miniaudio
         public uint isDecoderAtEnd;
 
         [NativeTypeName("ma_bool32[2]")]
-        public fixed uint isPageValid[2];
+        public _isPageValid_e__FixedBuffer isPageValid;
 
         [NativeTypeName("ma_bool32")]
         public uint seekCounter;
+
+        [InlineArray(2)]
+        public partial struct _pageFrameCount_e__FixedBuffer
+        {
+            public uint e0;
+        }
+
+        [InlineArray(2)]
+        public partial struct _isPageValid_e__FixedBuffer
+        {
+            public uint e0;
+        }
     }
 
     public partial struct ma_resource_manager_data_source
     {
-        [NativeTypeName("__AnonymousRecord_miniaudio_L6736_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L6770_C5")]
         public _backend_e__Union backend;
 
         [NativeTypeName("ma_uint32")]
@@ -4449,7 +4521,7 @@ namespace Miniaudio
         }
     }
 
-    public unsafe partial struct ma_stack
+    public partial struct ma_stack
     {
         [NativeTypeName("size_t")]
         public nuint offset;
@@ -4458,7 +4530,24 @@ namespace Miniaudio
         public nuint sizeInBytes;
 
         [NativeTypeName("unsigned char[1]")]
-        public fixed byte _data[1];
+        public __data_e__FixedBuffer _data;
+
+        public partial struct __data_e__FixedBuffer
+        {
+            public byte e0;
+
+            [UnscopedRef]
+            public ref byte this[int index]
+            {
+                get
+                {
+                    return ref Unsafe.Add(ref e0, index);
+                }
+            }
+
+            [UnscopedRef]
+            public Span<byte> AsSpan(int length) => MemoryMarshal.CreateSpan(ref e0, length);
+        }
     }
 
     public enum ma_node_flags
@@ -4598,7 +4687,7 @@ namespace Miniaudio
         public ma_node_state state;
 
         [NativeTypeName("ma_uint64[2]")]
-        public fixed ulong stateTimes[2];
+        public _stateTimes_e__FixedBuffer stateTimes;
 
         [NativeTypeName("ma_uint64")]
         public ulong localTime;
@@ -4614,36 +4703,22 @@ namespace Miniaudio
         [NativeTypeName("ma_bool32")]
         public uint _ownsHeap;
 
+        [InlineArray(2)]
+        public partial struct _stateTimes_e__FixedBuffer
+        {
+            public ulong e0;
+        }
+
+        [InlineArray(2)]
         public partial struct __inputBuses_e__FixedBuffer
         {
             public ma_node_input_bus e0;
-            public ma_node_input_bus e1;
-
-            public ref ma_node_input_bus this[int index]
-            {
-                get
-                {
-                    return ref AsSpan()[index];
-                }
-            }
-
-            public Span<ma_node_input_bus> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 2);
         }
 
+        [InlineArray(2)]
         public partial struct __outputBuses_e__FixedBuffer
         {
             public ma_node_output_bus e0;
-            public ma_node_output_bus e1;
-
-            public ref ma_node_output_bus this[int index]
-            {
-                get
-                {
-                    return ref AsSpan()[index];
-                }
-            }
-
-            public Span<ma_node_output_bus> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 2);
         }
     }
 
@@ -4931,7 +5006,7 @@ namespace Miniaudio
         [NativeTypeName("ma_uint32")]
         public uint pinnedListenerIndex;
 
-        [NativeTypeName("__AnonymousRecord_miniaudio_L7423_C5")]
+        [NativeTypeName("__AnonymousRecord_miniaudio_L7457_C5")]
         public _fadeSettings_e__Struct fadeSettings;
 
         [NativeTypeName("ma_bool8")]
@@ -5155,22 +5230,10 @@ namespace Miniaudio
 
         public void* pProcessUserData;
 
+        [InlineArray(4)]
         public partial struct _listeners_e__FixedBuffer
         {
             public ma_spatializer_listener e0;
-            public ma_spatializer_listener e1;
-            public ma_spatializer_listener e2;
-            public ma_spatializer_listener e3;
-
-            public ref ma_spatializer_listener this[int index]
-            {
-                get
-                {
-                    return ref AsSpan()[index];
-                }
-            }
-
-            public Span<ma_spatializer_listener> AsSpan() => MemoryMarshal.CreateSpan(ref e0, 4);
         }
     }
 
@@ -7896,19 +7959,19 @@ namespace Miniaudio
         public static extern ma_result sound_seek_to_second(ma_sound* pSound, float seekPointInSeconds);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_get_data_format", ExactSpelling = true)]
-        public static extern ma_result sound_get_data_format(ma_sound* pSound, ma_format* pFormat, [NativeTypeName("ma_uint32 *")] uint* pChannels, [NativeTypeName("ma_uint32 *")] uint* pSampleRate, [NativeTypeName("ma_channel *")] byte* pChannelMap, [NativeTypeName("size_t")] nuint channelMapCap);
+        public static extern ma_result sound_get_data_format([NativeTypeName("const ma_sound *")] ma_sound* pSound, ma_format* pFormat, [NativeTypeName("ma_uint32 *")] uint* pChannels, [NativeTypeName("ma_uint32 *")] uint* pSampleRate, [NativeTypeName("ma_channel *")] byte* pChannelMap, [NativeTypeName("size_t")] nuint channelMapCap);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_get_cursor_in_pcm_frames", ExactSpelling = true)]
-        public static extern ma_result sound_get_cursor_in_pcm_frames(ma_sound* pSound, [NativeTypeName("ma_uint64 *")] ulong* pCursor);
+        public static extern ma_result sound_get_cursor_in_pcm_frames([NativeTypeName("const ma_sound *")] ma_sound* pSound, [NativeTypeName("ma_uint64 *")] ulong* pCursor);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_get_length_in_pcm_frames", ExactSpelling = true)]
-        public static extern ma_result sound_get_length_in_pcm_frames(ma_sound* pSound, [NativeTypeName("ma_uint64 *")] ulong* pLength);
+        public static extern ma_result sound_get_length_in_pcm_frames([NativeTypeName("const ma_sound *")] ma_sound* pSound, [NativeTypeName("ma_uint64 *")] ulong* pLength);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_get_cursor_in_seconds", ExactSpelling = true)]
-        public static extern ma_result sound_get_cursor_in_seconds(ma_sound* pSound, float* pCursor);
+        public static extern ma_result sound_get_cursor_in_seconds([NativeTypeName("const ma_sound *")] ma_sound* pSound, float* pCursor);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_get_length_in_seconds", ExactSpelling = true)]
-        public static extern ma_result sound_get_length_in_seconds(ma_sound* pSound, float* pLength);
+        public static extern ma_result sound_get_length_in_seconds([NativeTypeName("const ma_sound *")] ma_sound* pSound, float* pLength);
 
         [DllImport("miniaudio", CallingConvention = CallingConvention.Cdecl, EntryPoint = "ma_sound_set_end_callback", ExactSpelling = true)]
         public static extern ma_result sound_set_end_callback(ma_sound* pSound, [NativeTypeName("ma_sound_end_proc")] delegate* unmanaged[Cdecl]<void*, ma_sound*, void> callback, void* pUserData);
