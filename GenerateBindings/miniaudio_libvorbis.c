@@ -598,6 +598,9 @@ MA_VORBIS_API ma_result ma_decoder_config_set_libvorbis_backend(ma_decoder_confi
     return MA_SUCCESS;
 }
 
+MA_VORBIS_API ma_decoding_backend_config* ma_decoder_config_get_libvorbis_backend_config() {
+    return &ma_decoding_backend_libvorbis;
+}
 
 ma_decoding_backend_vtable* ma_decoding_backend_libvorbis = &ma_gDecodingBackendVTable_libvorbis;
 #else
