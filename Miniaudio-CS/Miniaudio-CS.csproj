@@ -7,7 +7,7 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>miniaudio</Title>
-		<Description>C# bindings for miniaudio</Description>
+		<Description>Fork of C# bindings for miniaudio</Description>
 		<PackageTags>audio;miniaudio;player;mp3;wav;flac</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Authors>Estrol &amp; NyaCube</Authors>
@@ -16,7 +16,7 @@
 		<RepositoryType>git</RepositoryType>
 		<PackageId>Estrol.Miniaudio-CS</PackageId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<Version>1.0.5</Version>
+		<Version>1.0.6</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

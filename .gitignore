@@ -17,6 +17,14 @@
 mono_crash.*
 
 build
+build-win-arm64
+build-win-x64
+build-win-x86
+build-linux-arm64
+build-linux-x64
+build-linux-arm
+build-osx-arm64
+build-osx-x64
 
 # Build results
 [Dd]ebug/
