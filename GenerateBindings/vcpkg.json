@@ -1,0 +1,15 @@
+{
+    "name": "miniaudio-generatebindings",
+    "version": "0.1.0",
+    "dependencies": [
+        {
+            "name": "opusfile",
+            "version>=": "0.12+20221121#1"
+        },
+        {
+            "name": "libvorbis",
+            "version>=": "1.3.7#4"
+        }
+    ],
+    "builtin-baseline": "e7d511847f12658e9bd196b29b223144e3f2f091"
+}
