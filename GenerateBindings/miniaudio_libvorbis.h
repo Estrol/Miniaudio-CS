@@ -63,7 +63,7 @@ MA_VORBIS_API ma_result ma_libvorbis_get_data_format(ma_libvorbis* pVorbis, ma_f
 MA_VORBIS_API ma_result ma_libvorbis_get_cursor_in_pcm_frames(ma_libvorbis* pVorbis, ma_uint64* pCursor);
 MA_VORBIS_API ma_result ma_libvorbis_get_length_in_pcm_frames(ma_libvorbis* pVorbis, ma_uint64* pLength);
 MA_VORBIS_API ma_result ma_decoder_config_set_libvorbis_backend(ma_decoder_config* pConfig);
-MA_VORBIS_API ma_decoding_backend_config* ma_decoder_config_get_libvorbis_backend_config();
+MA_VORBIS_API ma_decoding_backend_vtable* ma_decoding_backend_libvorbis_get_vtable(void);
 
 /* Decoding backend vtable. This is what you'll plug into ma_decoder_config.pBackendVTables. No user data required. */
 extern ma_decoding_backend_vtable* ma_decoding_backend_libvorbis;
