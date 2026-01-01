@@ -18,7 +18,7 @@
     #define MA_DATA_CONVERTER_STACK_BUFFER_SIZE  4096
 #endif
 
-ma_result ma_decoder__init_data_converter_ex(ma_decoder* pDecoder, const ma_ex_decoder_config* pConfigEx);
+static ma_result ma_decoder__init_data_converter_ex(ma_decoder* pDecoder, const ma_ex_decoder_config* pConfigEx);
 
 MA_EX_API ma_ex_decoder_config ma_ex_decoder_config_init(ma_format format, ma_uint32 channels, ma_uint32 sampleRate) {
     ma_ex_decoder_config config;
