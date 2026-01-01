@@ -27,7 +27,7 @@ extern "C" {
 
 #if !defined(MA_EX_API)
     #if defined(MA_DLL)
-        #if defined(MINIAUDIO_VORBIS_IMPLEMENTATION) || defined(MA_VORBIS_IMPLEMENTATION)
+        #if defined(MINIAUDIO_EX_IMPLEMENTATION) || defined(MA_EX_IMPLEMENTATION)
             #define MA_EX_API  MA_DLL_EXPORT
         #else
             #define MA_EX_API  MA_DLL_IMPORT

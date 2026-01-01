@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(miniaudio-native)
 add_compile_definitions(MA_DLL)
-add_library(miniaudio SHARED ./miniaudio.c ./miniaudio_libvorbis.c)
+add_library(miniaudio SHARED ./miniaudio.c ./miniaudio_libvorbis.c ./miniaudio_ex.c)
 
 if (MSVC)
     target_compile_definitions(miniaudio PRIVATE _CRT_SECURE_NO_WARNINGS)

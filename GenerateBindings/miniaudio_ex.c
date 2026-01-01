@@ -1,4 +1,22 @@
+#define MINIAUDIO_EX_IMPLEMENTATION
 #include "./miniaudio_ex.h"
+
+#ifndef MA_ASSERT
+    #include <assert.h>
+    #define MA_ASSERT(x) assert(x)
+#endif
+
+#ifndef MA_ZERO_OBJECT
+    #define MA_ZERO_OBJECT(p) memset((p), 0, sizeof(*(p)))
+#endif
+
+#ifndef ma_countof
+    #define ma_countof(x) (sizeof(x) / sizeof((x)[0]))
+#endif
+
+#ifndef MA_DATA_CONVERTER_STACK_BUFFER_SIZE
+    #define MA_DATA_CONVERTER_STACK_BUFFER_SIZE  4096
+#endif
 
 ma_result ma_decoder__init_data_converter_ex(ma_decoder* pDecoder, const ma_ex_decoder_config* pConfigEx);
 
@@ -92,7 +110,7 @@ static ma_result ma_decoder__init_data_converter_ex(ma_decoder* pDecoder, const 
         return result;  /* Failed to retrieve the internal data format. */
     }
 
-    ma_decoder_config* pConfig = &pConfigEx->baseConfig;
+    const ma_decoder_config* pConfig = &pConfigEx->baseConfig;
 
     /* Make sure we're not asking for too many channels. */
     if (pConfig->channels > MA_MAX_CHANNELS) {
